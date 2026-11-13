@@ -2,7 +2,7 @@
 #
 #   repos:
 #     - repo: https://github.com/DevanshChoubey/shelllint
-#       rev: v0.2.0
+#       rev: v0.2.1
 #       hooks:
 #         - id: shelllint          # runs shelllint from your PATH
 #         # or
@@ -27,7 +27,7 @@
   description: Lint shell scripts with the static shelllint image; no local install needed.
   # Image is built from the repo Dockerfile and pushed by the release
   # workflow's docker-image job (ghcr.io names are lowercase).
-  entry: ghcr.io/devanshchoubey/shelllint:0.2.0
+  entry: ghcr.io/devanshchoubey/shelllint:0.2.1
   language: docker_image
   types: [shell]
   require_serial: true

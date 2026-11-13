@@ -2,7 +2,7 @@
 # Source build of shelllint. The -bin variant (PKGBUILD-bin) installs the
 # release tarball instead.
 pkgname=shelllint
-pkgver=0.2.0
+pkgver=0.2.1
 pkgrel=1
 pkgdesc="A Rust port of ShellCheck: finds bugs in shell scripts"
 arch=('x86_64' 'aarch64')

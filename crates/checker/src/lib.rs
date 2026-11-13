@@ -153,10 +153,38 @@ pub fn check_script_owned(sys: &dyn SystemInterface, mut spec: CheckSpec) -> Che
     })
 }
 
+#[cfg(not(target_arch = "wasm32"))]
+thread_local! {
+    /// Set on threads started by `with_check_stack`.
+    static ON_CHECK_STACK: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
+}
+
+/// Runs `f` on a thread with a `CHECK_STACK_BYTES` stack. `check_script`
+/// calls made inside `f` run on that thread directly instead of each
+/// starting their own, which saves a thread start and fresh stack pages per
+/// script. Use it around a loop that checks many scripts. Stack pages a deep
+/// script touches stay committed until `f` returns.
+#[cfg(not(target_arch = "wasm32"))]
+pub fn with_check_stack<R: Send>(f: impl FnOnce() -> R + Send) -> R {
+    if ON_CHECK_STACK.get() {
+        return f();
+    }
+    shelllint_parser::engine::with_stack(CHECK_STACK_BYTES, || {
+        ON_CHECK_STACK.set(true);
+        f()
+    })
+}
+
+/// `wasm32-unknown-unknown` has no threads, so `f` runs on the caller's stack.
+#[cfg(target_arch = "wasm32")]
+pub fn with_check_stack<R>(f: impl FnOnce() -> R) -> R {
+    f()
+}
+
 /// Runs `f` on a thread with a `CHECK_STACK_BYTES` stack.
 #[cfg(not(target_arch = "wasm32"))]
 fn run_on_check_stack<R: Send>(f: impl FnOnce() -> R + Send) -> R {
-    shelllint_parser::engine::with_stack(CHECK_STACK_BYTES, f)
+    with_check_stack(f)
 }
 
 /// `wasm32-unknown-unknown` has no threads, so `f` runs on the caller's stack.

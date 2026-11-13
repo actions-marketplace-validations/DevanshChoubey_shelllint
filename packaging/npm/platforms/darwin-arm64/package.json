@@ -1,6 +1,6 @@
 {
   "name": "@shelllint/darwin-arm64",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "shelllint prebuilt binary for darwin-arm64 (used via the shelllint package)",
   "license": "GPL-3.0-or-later",
   "repository": {

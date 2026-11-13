@@ -2,7 +2,7 @@
   "name": "shelllint",
   "displayName": "ShellCheck (Rust)",
   "description": "ShellCheck diagnostics, quick fixes and hovers via the shelllint language server.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "shelllint",
   "license": "GPL-3.0-or-later",
   "repository": {

@@ -3,7 +3,7 @@ resolver = "3"
 members = ["crates/*"]
 
 [workspace.package]
-version = "0.2.0"
+version = "0.2.1"
 edition = "2024"
 license = "GPL-3.0-or-later"
 description = "An unofficial Rust port of ShellCheck, the shell script static analysis tool"
@@ -17,12 +17,12 @@ rust-version = "1.88"
 # The internal crates, with the version crates.io needs to resolve them
 # once published (bump together with workspace.package.version).
 [workspace.dependencies]
-shelllint-core = { path = "crates/core", version = "0.2.0" }
-shelllint-parser = { path = "crates/parser", version = "0.2.0" }
-shelllint-analyzer = { path = "crates/analyzer", version = "0.2.0" }
-shelllint-checks = { path = "crates/checks", version = "0.2.0" }
-shelllint-checker = { path = "crates/checker", version = "0.2.0" }
-shelllint-formatter = { path = "crates/formatter", version = "0.2.0" }
+shelllint-core = { path = "crates/core", version = "0.2.1" }
+shelllint-parser = { path = "crates/parser", version = "0.2.1" }
+shelllint-analyzer = { path = "crates/analyzer", version = "0.2.1" }
+shelllint-checks = { path = "crates/checks", version = "0.2.1" }
+shelllint-checker = { path = "crates/checker", version = "0.2.1" }
+shelllint-formatter = { path = "crates/formatter", version = "0.2.1" }
 
 [profile.release]
 lto = true

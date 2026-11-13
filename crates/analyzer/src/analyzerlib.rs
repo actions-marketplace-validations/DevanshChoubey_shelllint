@@ -427,9 +427,20 @@ fn any_token(ast: &Ast, root: Id, p: &dyn Fn(Id) -> bool) -> bool {
     false
 }
 
+/// `[[:space:]]-[^-]*<c>`, compiled once per ASCII flag letter: every script
+/// asks about `-a` and `-e`, and compiling the regex dominated the lookup.
+fn short_flag_regex(short_opt: char) -> std::borrow::Cow<'static, Regex> {
+    static CACHE: [std::sync::OnceLock<Regex>; 128] = [const { std::sync::OnceLock::new() }; 128];
+    let compile = || mk_regex(&format!("[[:space:]]-[^-]*{short_opt}"));
+    match CACHE.get(short_opt as usize) {
+        Some(slot) => std::borrow::Cow::Borrowed(slot.get_or_init(compile)),
+        None => std::borrow::Cow::Owned(compile()),
+    }
+}
+
 /// detect e.g. 'set -o errexit' or 'set -e'
 pub fn is_option_set_(ast: &Ast, long_opt: &str, short_opt: char, root: Id) -> bool {
-    let re = mk_regex(&format!("[[:space:]]-[^-]*{short_opt}"));
+    let re = short_flag_regex(short_opt);
     let is_set_option = |t: Id| match ast.get(t) {
         Token::T_Script(sb, _) => match ast.get(*sb) {
             Token::T_Literal(str) => matches(str, &re),

@@ -19,7 +19,7 @@ use std::io::Write;
 use std::process::exit;
 use std::sync::atomic::{AtomicBool, Ordering};
 
-use shelllint_checker::{check_script_owned, optional_checks};
+use shelllint_checker::{check_script_owned, optional_checks, with_check_stack};
 use shelllint_core::data::{SHELLCHECK_VERSION, shell_for_executable};
 use shelllint_core::extras::{expand_home, is_external_var_pattern};
 use shelllint_core::interface::{CheckSpec, ColorOption, Severity, SystemInterface};
@@ -103,7 +103,8 @@ fn main() {
             .unwrap_or_else(|| "internal error".to_string());
         eprintln!("{}: {}", prog_name(), msg);
     }));
-    match std::panic::catch_unwind(run_main) {
+    // Every file is checked on one big-stack thread instead of one each.
+    match std::panic::catch_unwind(|| with_check_stack(run_main)) {
         Ok(code) => exit(code),
         Err(_) => {
             let _ = std::io::stdout().flush();

@@ -24,7 +24,7 @@ inputs:
   version:
     description: Release version to download (without the leading v). Use "latest" to follow the newest release.
     required: false
-    default: "0.2.0"
+    default: "0.2.1"
   repository:
     description: GitHub repository that hosts the release assets, as DevanshChoubey/NAME.
     required: false

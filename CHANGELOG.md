@@ -8,6 +8,23 @@ Each release also states which upstream ShellCheck commit it ports.
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-13
+
+Ports ShellCheck at upstream commit `e11f964` (`v0.11.0-171-ge11f964`), the same
+commit as 0.2.0.
+
+### Added
+
+- `shelllint_checker::with_check_stack`: runs a closure on one big-stack thread,
+  and `check_script` calls inside it reuse that thread instead of starting one
+  each. Use it around a loop that checks many scripts.
+
+### Changed
+
+- Faster on many small scripts: the `set -e` / `set -a` lookups no longer
+  compile a regex for every script, and the CLI checks all its files on one
+  big-stack thread. Output is unchanged.
+
 ## [0.2.0] - 2026-11-09
 
 Ports ShellCheck at upstream commit `e11f964` (`v0.11.0-171-ge11f964`), the same
@@ -68,6 +85,7 @@ Ports ShellCheck at upstream commit `e11f964` (`v0.11.0-171-ge11f964`).
   security policy, issue and pull request templates, and CI and release
   workflows.
 
-[Unreleased]: https://github.com/DevanshChoubey/shelllint/compare/v0.2.0...main
+[Unreleased]: https://github.com/DevanshChoubey/shelllint/compare/v0.2.1...main
+[0.2.1]: https://github.com/DevanshChoubey/shelllint/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/DevanshChoubey/shelllint/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/DevanshChoubey/shelllint/releases/tag/v0.1.0
